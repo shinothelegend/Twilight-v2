@@ -10,7 +10,7 @@ contracts/broadcast/
 .env*.local
 
 # Local tool permissions, not project config
-.claude/settings.local.json
+.main/settings.local.json
 
 # TypeScript incremental build artifact
 *.tsbuildinfo

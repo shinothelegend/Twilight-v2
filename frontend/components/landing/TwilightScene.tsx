@@ -55,9 +55,11 @@ const SHOOTING_STARS = makeShootingStars(3);
  */
 export function TwilightScene({
   variant = "landing",
+  showMoon = true,
 }: {
   /** `app` is the same scene held back a stop or two so dashboard data stays dominant. */
   variant?: "landing" | "app";
+  showMoon?: boolean;
 }) {
   const dim = variant === "app";
 
@@ -78,7 +80,7 @@ export function TwilightScene({
 
       {/* The moon. On the dashboard it is pushed off the top edge — the balance card carries its
           own moon there, and two would compete. */}
-      {!dim && (
+      {!dim && showMoon && (
         <div className="absolute top-[4%] left-1/2 -translate-x-1/2">
           <MoonDisc size={300} />
         </div>
