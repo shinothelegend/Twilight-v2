@@ -1,0 +1,269 @@
+@import "tailwindcss";
+
+/*
+ * Twilight DeFi design tokens.
+ *
+ * Strict grayscale by design: the only warm note in the whole palette is --color-glow, used for
+ * the moon and for the soft halo behind the balance figure. Direction (up/down, gain/loss) is
+ * communicated with glyphs and type weight, never with green/red.
+ */
+@theme {
+  --color-night-900: #0a0a0c;
+  --color-night-800: #101014;
+  --color-night-700: #141418;
+  --color-panel: #1c1c20;
+  --color-panel-raised: #212126;
+  --color-edge: #2c2c32;
+  --color-divider: #2a2a2f;
+  --color-branch: #050506;
+  --color-glow: #f5f3ee;
+  --color-ink: #eeeeef;
+  --color-muted: #8a8a90;
+  --color-faint: #5c5c63;
+  --color-neutral-strong: #c9c9c9;
+
+  /* Display serif, used only for the headline and the balance figure — the cinematic register. */
+  --font-display: var(--font-playfair), ui-serif, Georgia, serif;
+  /* Uppercase labels and the wordmark. */
+  --font-brand: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  background-color: var(--color-night-900);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+/* Balances and any figure the user might compare vertically. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/*
+ * Decorative motion only.
+ *
+ * Every loop below animates `transform`, `opacity` or `filter` exclusively — never a layout
+ * property — so each one is composited on the GPU and none of them can block data rendering or
+ * cause reflow. Layer-level animations are preferred over per-element ones: the star field drifts
+ * as a single transformed container rather than 52 independently moving nodes.
+ *
+ *   sky-drift    – gradient sky, one large surface
+ *   mist-near /
+ *   mist-far     – two fog banks drifting at different speeds, for depth
+ *   halo-pulse   – moon halo and the balance glow
+ *   moon-shine   – the moon disc's own brightness, slower and subtler than the halo
+ *   star-drift   – the whole star layer, imperceptibly slow
+ *   star-pulse   – per-star opacity twinkle
+ *   shoot        – occasional shooting star, mostly idle between passes
+ *   sway         – branch silhouettes
+ */
+@keyframes sky-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(0, -1.5%, 0) scale(1.12);
+  }
+}
+
+@keyframes halo-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.04);
+  }
+}
+
+@keyframes star-pulse {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+/* The moon's own light, breathing slightly out of phase with its halo. */
+@keyframes moon-shine {
+  0%,
+  100% {
+    filter: brightness(1) saturate(1);
+    transform: scale(1);
+  }
+  50% {
+    filter: brightness(1.14) saturate(1);
+    transform: scale(1.012);
+  }
+}
+
+/* The star layer drifts as one composited surface — cheaper than moving each star. */
+@keyframes star-drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-2.5%, 1.5%, 0);
+  }
+}
+
+@keyframes mist-near {
+  0%,
+  100% {
+    transform: translate3d(-4%, 0, 0) scale(1.15);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(4%, -2%, 0) scale(1.25);
+    opacity: 0.75;
+  }
+}
+
+@keyframes mist-far {
+  0%,
+  100% {
+    transform: translate3d(3%, 1%, 0) scale(1.2);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(-3%, -1%, 0) scale(1.3);
+    opacity: 0.6;
+  }
+}
+
+/*
+ * Shooting star. The visible streak occupies ~4% of the cycle; the rest is idle, so several can
+ * share the sky at different delays without ever feeling busy.
+ */
+@keyframes shoot {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(18deg) scaleX(0.2);
+    opacity: 0;
+  }
+  1% {
+    opacity: 0.9;
+  }
+  4% {
+    transform: translate3d(26vw, 12vh, 0) rotate(18deg) scaleX(1);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(26vw, 12vh, 0) rotate(18deg) scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-0.35deg);
+  }
+  50% {
+    transform: rotate(0.35deg);
+  }
+}
+
+.anim-sky {
+  animation: sky-drift 48s ease-in-out infinite;
+  will-change: transform;
+}
+
+.anim-halo {
+  animation: halo-pulse 9s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+.anim-star {
+  animation: star-pulse var(--star-duration, 6s) ease-in-out infinite;
+  animation-delay: var(--star-delay, 0s);
+}
+
+.anim-sway {
+  animation: sway 26s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+.anim-moon {
+  animation: moon-shine 11s ease-in-out infinite;
+  will-change: filter, transform;
+}
+
+.anim-star-drift {
+  animation: star-drift 210s linear infinite alternate;
+  will-change: transform;
+}
+
+.anim-mist-near {
+  animation: mist-near 64s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.anim-mist-far {
+  animation: mist-far 92s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.anim-shoot {
+  animation: shoot var(--shoot-duration, 14s) linear infinite;
+  animation-delay: var(--shoot-delay, 0s);
+  opacity: 0;
+}
+
+/*
+ * Honour the OS-level preference: all decoration freezes and the shooting stars are removed
+ * outright. Data rendering is untouched either way.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .anim-sky,
+  .anim-halo,
+  .anim-star,
+  .anim-star-drift,
+  .anim-sway,
+  .anim-moon,
+  .anim-mist-near,
+  .anim-mist-far {
+    animation: none !important;
+  }
+  .anim-star {
+    opacity: 0.4;
+  }
+  .anim-shoot {
+    display: none;
+  }
+}
+
+/* Focus ring that stays inside the palette. */
+:where(a, button, input, select, [tabindex]):focus-visible {
+  outline: 1px solid var(--color-glow);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #33333a;
+  color: var(--color-ink);
+}
+
+/* Thin, quiet scrollbars inside data panels. */
+.quiet-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-edge) transparent;
+}
+.quiet-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.quiet-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-edge);
+  border-radius: 999px;
+}

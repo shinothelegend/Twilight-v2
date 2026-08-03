@@ -1,0 +1,16 @@
+node_modules/
+.env
+.next/
+out/
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+.DS_Store
+.env.local
+.env*.local
+
+# Local tool permissions, not project config
+.claude/settings.local.json
+
+# TypeScript incremental build artifact
+*.tsbuildinfo

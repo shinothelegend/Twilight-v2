@@ -1,0 +1,24 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+remappings = ["@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"]
+fs_permissions = [{access = "read-write", path = "./deployments"}]
+
+[fmt]
+line_length = 110
+tab_width = 4
+bracket_spacing = false
+
+[rpc_endpoints]
+arbitrumSepolia = "${ARBITRUM_SEPOLIA_RPC_URL}"
+
+[etherscan]
+# Etherscan V2: one key works across every supported chain, including Arbitrum Sepolia, so the
+# same key verifies the contracts here and powers the frontend's native-transfer lookup.
+arbitrumSepolia = {key = "${ARBISCAN_API_KEY}", chain = 421614, url = "https://api.etherscan.io/v2/api?chainid=421614"}
