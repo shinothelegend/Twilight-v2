@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-14T10:02:00Z",
+  "title": "Design System: Twilight DeFi",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Warm Moon Glow",
+        "canonical": "#f5f3ee",
+        "tonalRamp": [
+          "#f5f3ee",
+          "#eae6dc",
+          "#ded8ca",
+          "#d2cab8",
+          "#c5bba6",
+          "#b8ac94",
+          "#ab9d82",
+          "#9e8d70"
+        ]
+      },
+      "neutral-bg": {
+        "role": "neutral",
+        "displayName": "True Midnight",
+        "canonical": "#090a0f",
+        "tonalRamp": [
+          "#090a0f",
+          "#0d0f17",
+          "#121520",
+          "#171a26",
+          "#1d2130",
+          "#2c2c32",
+          "#8a8a90",
+          "#eeeeef"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display Serif",
+        "purpose": "Used exclusively for the headline wallet balance inside the moon."
+      },
+      "brand": {
+        "displayName": "Brand Grotesk",
+        "purpose": "Used for navigation items, section headers, and uppercase labels."
+      },
+      "sans": {
+        "displayName": "Inter Sans",
+        "purpose": "Used for all regular body text, values, and form inputs."
+      }
+    },
+    "shadows": [
+      {
+        "name": "glow-low",
+        "value": "0 0 24px rgba(245,243,238,0.28)",
+        "purpose": "Celestial glow behind the moon and hero CTA."
+      },
+      {
+        "name": "lifted-soft",
+        "value": "0 28px 56px -32px rgba(0,0,0,0.95)",
+        "purpose": "Soft, deep drop shadow for layout panels."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Standard easing curve for premium, organic visual responses."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Standard high-contrast primary CTA.",
+      "html": "<button class=\"ds-btn-primary\">LAUNCH APP</button>",
+      "css": ".ds-btn-primary { background: #eeeeef; color: #090a0f; padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; border: none; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: #ffffff; box-shadow: 0 0 16px rgba(255,255,255,0.12); } .ds-btn-primary:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary border button.",
+      "html": "<button class=\"ds-btn-ghost\">DISMISS</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #eeeeef; border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 20px; font-size: 12px; font-weight: 700; border-radius: 12px; letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-ghost:hover { border-color: rgba(255, 255, 255, 0.2); background: rgba(29, 33, 48, 0.35); } .ds-btn-ghost:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Glass Panel",
+      "kind": "card",
+      "description": "Frosted panel that serves as layout container.",
+      "html": "<div class=\"ds-panel\"><div class=\"ds-panel-header\">PANEL HEADER</div><div class=\"ds-panel-content\">Panel content goes here.</div></div>",
+      "css": ".ds-panel { border: 1px solid rgba(255, 255, 255, 0.08); background: rgba(23, 26, 38, 0.55); backdrop-filter: blur(12px); border-radius: 24px; padding: 20px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset, 0 28px 56px -32px rgba(0,0,0,0.95); } .ds-panel:hover { border-color: rgba(255, 255, 255, 0.16); box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 32px 64px -24px rgba(0,0,0,0.98); } .ds-panel-header { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: #eeeeef; border-b: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; margin-bottom: 16px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Editorial Sanctuary",
+    "overview": "Twilight DeFi is a high-contrast, premium, dark-mode visual interface designed to evoke a sense of calm, precision, and verifiability. By stripping away typical DeFi tropes—such as neon colors, flashing green/red tags, and confusing charts—the interface establishes trust through typographic hierarchy and structural clarity.",
+    "keyCharacteristics": [
+      "Strict grayscale visual discipline (all structural states, directions, and values are monochrome).",
+      "A single warm-white accent (#f5f3ee) reserved exclusively for the moon and its halo.",
+      "Tactile, high-end transitions using a custom exponential ease-out curve.",
+      "Complete on-chain transparency (never show a number that is not live-fetched)."
+    ],
+    "rules": [
+      {
+        "name": "The Grayscale Discipline Rule",
+        "body": "No green or red is ever used to indicate direction or status. Up/down movements are indicated solely via directional glyphs (↑ or ↓) and typography weights.",
+        "section": "colors"
+      },
+      {
+        "name": "The Display Serif Isolation Rule",
+        "body": "The serif typeface must only appear on the primary hero balance value inside the moon disc. Every other number and text label uses the sans-serif geometric face.",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do align columns of numbers using the tnum class.",
+      "Do use the custom cubic-bezier(0.16, 1, 0.3, 1) easing curve for all state transitions.",
+      "Do provide clear, descriptive empty states that guide the user on their next steps."
+    ],
+    "donts": [
+      "Don't use the warm-white glow color (#f5f3ee) on buttons, labels, active borders, or focus outlines.",
+      "Don't use any green or red colors for gain, loss, success, or error status messages.",
+      "Don't use monospaced fonts for anything other than transaction hashes or code elements."
+    ]
+  }
+}

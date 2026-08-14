@@ -25,7 +25,7 @@ type Asset = "ETH" | "TWLT";
  * token's `transfer`. The panel refuses to submit until the recipient is a valid address and the
  * amount fits the balance actually read from chain.
  */
-export function TransferPanel({balances}: {balances: Balances}) {
+export function TransferPanel({balances, noPanel = false}: {balances: Balances; noPanel?: boolean}) {
   const {address, isConnected} = useAccount();
   const [tab, setTab] = useState<"send" | "receive">("send");
   const [asset, setAsset] = useState<Asset>("ETH");
@@ -87,31 +87,31 @@ export function TransferPanel({balances}: {balances: Balances}) {
     setTimeout(() => setCopied(false), 1800);
   };
 
-  return (
-    <Panel
-      title="Send & receive"
-      subtitle="Real transfers on Arbitrum Sepolia"
-      action={
-        <div className="flex gap-1 rounded-lg border border-edge p-0.5">
-          {(["send", "receive"] as const).map((value) => (
-            <button
-              key={value}
-              onClick={() => setTab(value)}
-              className={
-                "rounded-md px-3 py-1 text-[11px] tracking-[0.14em] uppercase transition-colors " +
-                (tab === value ? "bg-panel-raised text-ink" : "text-faint hover:text-muted")
-              }
-            >
-              {value}
-            </button>
-          ))}
-        </div>
-      }
-    >
+  const tabSelector = (
+    <div className="flex gap-1 rounded-xl border border-edge p-1 bg-night-900/10 mb-4 mx-5 mt-4">
+      {(["send", "receive"] as const).map((value) => (
+        <button
+          key={value}
+          onClick={() => setTab(value)}
+          className={
+            "flex-1 rounded-lg py-2 text-xs tracking-[0.14em] uppercase transition-colors font-brand " +
+            (tab === value ? "bg-panel-raised text-ink bg-panel-raised/50" : "text-faint hover:text-muted")
+          }
+        >
+          {value}
+        </button>
+      ))}
+    </div>
+  );
+
+  const innerContent = (
+    <div className="flex flex-col">
+      {noPanel && tabSelector}
+
       {!isConnected ? (
         <EmptyState title="Connect a wallet to send or receive" />
       ) : tab === "receive" ? (
-        <div className="px-5 py-6">
+        <div className="px-5 pb-6 pt-2">
           <p className="text-[11px] tracking-[0.16em] text-faint uppercase">Your address</p>
           <p className="tnum mt-3 text-sm leading-relaxed break-all text-ink">{address}</p>
           <Button variant="ghost" className="mt-4 w-full" onClick={() => void copy()}>
@@ -123,7 +123,7 @@ export function TransferPanel({balances}: {balances: Balances}) {
           </p>
         </div>
       ) : (
-        <div className="px-5 py-5">
+        <div className="px-5 pb-5 pt-2">
           <div className="mb-4 flex gap-1 rounded-xl border border-edge p-1">
             {(["ETH", "TWLT"] as const).map((value) => (
               <button
@@ -149,7 +149,7 @@ export function TransferPanel({balances}: {balances: Balances}) {
               onChange={(event) => setRecipient(event.target.value.trim())}
               placeholder="0x…"
               spellCheck={false}
-              className="tnum w-full rounded-xl border border-edge bg-night-800 px-4 py-3 text-sm text-ink outline-none placeholder:text-faint focus:border-muted"
+              className="tnum w-full rounded-xl border border-edge bg-night-800 px-4 py-3 text-sm text-ink outline-none placeholder:text-faint transition-all duration-300 ease-[var(--ease-out-expo)] focus:border-white/20 focus:bg-night-800/80"
             />
           </label>
           {recipient !== "" && !recipientValid && (
@@ -158,7 +158,7 @@ export function TransferPanel({balances}: {balances: Balances}) {
 
           <label className="mt-3 block">
             <span className="sr-only">Amount</span>
-            <div className="flex items-center gap-2 rounded-xl border border-edge bg-night-800 px-4 py-3 focus-within:border-muted">
+            <div className="flex items-center gap-2 rounded-xl border border-edge bg-night-800 px-4 py-3 transition-all duration-300 ease-[var(--ease-out-expo)] focus-within:border-white/20 focus-within:bg-night-800/80">
               <input
                 value={amount}
                 onChange={(event) => setAmount(event.target.value.replace(/[^\d.]/g, ""))}
@@ -198,6 +198,35 @@ export function TransferPanel({balances}: {balances: Balances}) {
           sendToken.reset();
         }}
       />
+    </div>
+  );
+
+  if (noPanel) {
+    return innerContent;
+  }
+
+  return (
+    <Panel
+      title="Send & receive"
+      subtitle="Real transfers on Arbitrum Sepolia"
+      action={
+        <div className="flex gap-1 rounded-lg border border-edge p-0.5">
+          {(["send", "receive"] as const).map((value) => (
+            <button
+              key={value}
+              onClick={() => setTab(value)}
+              className={
+                "rounded-md px-3 py-1 text-[11px] tracking-[0.14em] uppercase transition-colors " +
+                (tab === value ? "bg-panel-raised text-ink" : "text-faint hover:text-muted")
+              }
+            >
+              {value}
+            </button>
+          ))}
+        </div>
+      }
+    >
+      {innerContent}
     </Panel>
   );
 }

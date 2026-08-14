@@ -73,7 +73,7 @@ export function TwilightScene({
         className="anim-sky absolute inset-[-10%]"
         style={{
           background:
-            "radial-gradient(120% 80% at 50% 26%, #1e1e24 0%, #16161b 34%, #0e0e12 64%, #0a0a0c 100%)",
+            "radial-gradient(120% 80% at 50% 26%, #121625 0%, #0d0f17 34%, #090a0f 70%, #06070a 100%)",
           opacity: dim ? 0.72 : 1,
         }}
       />

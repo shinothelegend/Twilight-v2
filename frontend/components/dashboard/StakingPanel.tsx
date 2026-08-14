@@ -40,7 +40,7 @@ function PoolStat({
  * `totalStaked`, not from a configured constant, and it is hidden entirely when the pool has no
  * stake or no active period rather than showing a made-up headline rate.
  */
-export function StakingPanel() {
+export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
   const {isConnected} = useAccount();
   const staking = useStaking();
   const [mode, setMode] = useState<"stake" | "withdraw">("stake");
@@ -95,23 +95,8 @@ export function StakingPanel() {
   const periodSecondsLeft =
     staking.periodFinish === undefined ? undefined : Number(staking.periodFinish) - nowSeconds;
 
-  return (
-    <Panel
-      title="Staking"
-      subtitle="Stake TWLT, accrue rewards every second, withdraw any time"
-      action={
-        staking.pendingRewards !== undefined && staking.pendingRewards > 0n ? (
-          <Button
-            variant="ghost"
-            className="px-3 py-1.5 text-xs"
-            disabled={busy}
-            onClick={() => void staking.claim().catch(() => undefined)}
-          >
-            {staking.action === "claim" && busy ? "Claiming…" : "Claim rewards"}
-          </Button>
-        ) : undefined
-      }
-    >
+  const innerContent = (
+    <div className="flex flex-col">
       {staking.readError ? (
         <ErrorNote error={staking.readError} onRetry={() => void staking.refetch()} />
       ) : !isConnected ? (
@@ -157,15 +142,27 @@ export function StakingPanel() {
               value={`${formatAmount(staking.stakedBalance)} TWLT`}
               loading={staking.stakedBalance === undefined}
             />
-            <PoolStat
-              label="Rewards earned"
-              value={`${formatAmount(staking.pendingRewards, 18, 6)} TWLT`}
-              loading={staking.pendingRewards === undefined}
-            />
+            <div className="flex flex-col justify-between">
+              <PoolStat
+                label="Rewards earned"
+                value={`${formatAmount(staking.pendingRewards, 18, 6)} TWLT`}
+                loading={staking.pendingRewards === undefined}
+              />
+              {noPanel && staking.pendingRewards !== undefined && staking.pendingRewards > 0n && (
+                <Button
+                  variant="ghost"
+                  className="mt-2 px-3 py-1 text-xs w-fit"
+                  disabled={busy}
+                  onClick={() => void staking.claim().catch(() => undefined)}
+                >
+                  {staking.action === "claim" && busy ? "Claiming…" : "Claim rewards"}
+                </Button>
+              )}
+            </div>
           </div>
 
           <div className="border-t border-divider px-5 py-5">
-            <div className="mb-4 flex gap-1 rounded-xl border border-edge p-1">
+            <div className="mb-4 flex gap-1 rounded-xl border border-edge p-1 bg-night-900/10">
               {(["stake", "withdraw"] as const).map((value) => (
                 <button
                   key={value}
@@ -187,7 +184,7 @@ export function StakingPanel() {
 
             <label className="block">
               <span className="sr-only">Amount in TWLT</span>
-              <div className="flex items-center gap-2 rounded-xl border border-edge bg-night-800 px-4 py-3 focus-within:border-muted">
+              <div className="flex items-center gap-2 rounded-xl border border-edge bg-night-800 px-4 py-3 transition-all duration-300 ease-[var(--ease-out-expo)] focus-within:border-white/20 focus-within:bg-night-800/80">
                 <input
                   value={amount}
                   onChange={(event) => setAmount(event.target.value.replace(/[^\d.]/g, ""))}
@@ -200,7 +197,7 @@ export function StakingPanel() {
                   type="button"
                   disabled={max === undefined || max === 0n}
                   onClick={() => max !== undefined && setAmount(formatUnits(max, 18))}
-                  className="rounded-lg border border-edge px-2 py-1 text-[11px] tracking-[0.12em] text-muted uppercase transition-colors hover:border-muted hover:text-ink disabled:opacity-40"
+                  className="rounded-lg border border-edge px-2 py-1 text-[11px] tracking-[0.12em] text-muted uppercase transition-all duration-300 ease-[var(--ease-out-expo)] hover:border-white/20 hover:text-ink active:scale-[0.96] disabled:opacity-40 disabled:scale-100"
                 >
                   Max
                 </button>
@@ -238,6 +235,31 @@ export function StakingPanel() {
         error={staking.error}
         onDismiss={staking.resetTx}
       />
+    </div>
+  );
+
+  if (noPanel) {
+    return innerContent;
+  }
+
+  return (
+    <Panel
+      title="Staking"
+      subtitle="Stake TWLT, accrue rewards every second, withdraw any time"
+      action={
+        staking.pendingRewards !== undefined && staking.pendingRewards > 0n ? (
+          <Button
+            variant="ghost"
+            className="px-3 py-1.5 text-xs"
+            disabled={busy}
+            onClick={() => void staking.claim().catch(() => undefined)}
+          >
+            {staking.action === "claim" && busy ? "Claiming…" : "Claim rewards"}
+          </Button>
+        ) : undefined
+      }
+    >
+      {innerContent}
     </Panel>
   );
 }

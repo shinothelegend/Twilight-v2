@@ -1,15 +1,15 @@
 "use client";
 
 import React from "react";
-import {AssetList} from "@/components/dashboard/AssetList";
+import {TransferPanel} from "@/components/dashboard/TransferPanel";
 import {useRealBalances} from "@/lib/hooks/useRealBalances";
 
-export default function HoldingsPage() {
+export default function TransferPage() {
   const balances = useRealBalances();
 
   return (
     <div className="mx-auto max-w-2xl">
-      <AssetList balances={balances} />
+      <TransferPanel balances={balances} />
     </div>
   );
 }

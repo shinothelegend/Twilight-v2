@@ -25,6 +25,8 @@ export function Panel({
         // and the cards feel like glass held up to the night rather than boxes pasted over it.
         "rounded-3xl border border-white/[0.09] bg-panel/55 backdrop-blur-md",
         "shadow-[0_1px_0_rgba(255,255,255,0.05)_inset,0_28px_56px_-32px_rgba(0,0,0,0.95)]",
+        "transition-all duration-300 ease-[var(--ease-out-expo)]",
+        "hover:border-white/[0.16] hover:shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_32px_64px_-24px_rgba(0,0,0,0.98)]",
         className,
       )}
     >
@@ -47,8 +49,9 @@ export function Panel({
 }
 
 const buttonBase =
-  "inline-flex items-center justify-center gap-2 rounded-xl px-4 py-2.5 text-sm font-medium " +
-  "transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-40";
+  "inline-flex items-center justify-center gap-2 rounded-xl px-5 py-2.5 text-xs font-bold tracking-[0.06em] uppercase " +
+  "transition-all duration-300 ease-[var(--ease-out-expo)] active:scale-[0.97] " +
+  "disabled:cursor-not-allowed disabled:opacity-40 disabled:scale-100";
 
 export function Button({
   variant = "primary",
@@ -57,9 +60,9 @@ export function Button({
   ...props
 }: {variant?: "primary" | "ghost" | "quiet"} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const variants = {
-    primary: "bg-ink text-night-900 hover:bg-white",
-    ghost: "border border-edge text-ink hover:border-muted hover:bg-panel-raised",
-    quiet: "text-muted hover:text-ink",
+    primary: "bg-ink text-night-900 hover:bg-white hover:shadow-[0_0_16px_rgba(255,255,255,0.12)]",
+    ghost: "border border-edge bg-transparent text-ink hover:border-white/20 hover:bg-panel-raised/35",
+    quiet: "text-muted hover:text-ink active:scale-100",
   } as const;
   return (
     <button className={cx(buttonBase, variants[variant], className)} {...props}>

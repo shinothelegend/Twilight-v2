@@ -27,26 +27,30 @@ function Row({item}: {item: ActivityItem}) {
   const isNative = item.kind.startsWith("native-");
 
   return (
-    <li className="flex items-center gap-4 px-5 py-3.5 transition-colors hover:bg-panel-raised/60">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-edge text-sm">
+    <li className="flex items-center gap-4 px-5 py-3.5 border-b border-divider last:border-b-0 transition-colors hover:bg-panel-raised/20">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-edge text-[10px] bg-panel-raised/15 text-muted">
         <DirectionGlyph direction={label.direction} />
       </span>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm text-ink">{label.title}</p>
-        <p className="truncate text-xs text-faint">
+        <p className="text-sm font-medium text-ink leading-tight">{label.title}</p>
+        <p className="truncate text-xs text-faint mt-0.5">
           {item.counterparty ? (
             <>
               {label.direction === "out" ? "to " : "from "}
-              <span className="tnum">{shortAddress(item.counterparty)}</span>
+              <span className="tnum font-medium">{shortAddress(item.counterparty)}</span>
               {" · "}
             </>
           ) : null}
+          <span>
+            {item.timestamp ? relativeTime(item.timestamp) : `block ${item.blockNumber}`}
+          </span>
+          {" · "}
           <a
             href={explorer.tx(item.hash)}
             target="_blank"
             rel="noreferrer"
-            className="tnum transition-colors hover:text-muted"
+            className="tnum font-medium underline decoration-edge underline-offset-2 transition-colors hover:text-muted hover:decoration-muted"
           >
             {shortHash(item.hash)}
           </a>
@@ -54,13 +58,10 @@ function Row({item}: {item: ActivityItem}) {
       </div>
 
       <div className="shrink-0 text-right">
-        <p className="tnum text-sm text-neutral-strong">
+        <p className="tnum text-sm text-neutral-strong font-medium">
           {label.direction === "out" ? "−" : "+"}
           {formatAmount(item.amount, item.decimals, isNative ? 5 : 4)}{" "}
-          <span className="text-faint">{isNative ? "ETH" : item.symbol}</span>
-        </p>
-        <p className="text-xs text-faint">
-          {item.timestamp ? relativeTime(item.timestamp) : `block ${item.blockNumber}`}
+          <span className="text-faint font-normal">{isNative ? "ETH" : item.symbol}</span>
         </p>
       </div>
     </li>

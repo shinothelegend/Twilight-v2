@@ -14,7 +14,7 @@ import {useStaking} from "@/lib/hooks/useStaking";
  * The cooldown shown is the contract's own `nextFaucetClaim` value for the connected address,
  * counted against the current time — not a client-side timer.
  */
-export function FaucetCard() {
+export function FaucetCard({noPanel = false}: {noPanel?: boolean}) {
   const {isConnected} = useAccount();
   const staking = useStaking();
 
@@ -24,38 +24,36 @@ export function FaucetCard() {
   const onCooldown = secondsLeft !== undefined && secondsLeft > 0;
   const busy = staking.isSigning || staking.isConfirming;
 
-  return (
-    <Panel title="Faucet" subtitle="100 TWLT per address, once every 24 hours">
-      <div className="px-5 py-5">
-        <p className="text-xs leading-relaxed text-muted">
-          TWLT is minted by the{" "}
-          <a
-            href={explorer.address(twilightToken.address)}
-            target="_blank"
-            rel="noreferrer"
-            className="text-neutral-strong underline decoration-edge underline-offset-4 transition-colors hover:decoration-muted"
-          >
-            token contract
-          </a>{" "}
-          itself. The cooldown is enforced on chain, per address.
-        </p>
-
-        <Button
-          className="mt-4 w-full"
-          disabled={!isConnected || busy || onCooldown}
-          onClick={() => void staking.claimFaucet().catch(() => undefined)}
+  const innerContent = (
+    <div className="px-5 py-5 flex flex-col">
+      <p className="text-xs leading-relaxed text-muted">
+        TWLT is minted by the{" "}
+        <a
+          href={explorer.address(twilightToken.address)}
+          target="_blank"
+          rel="noreferrer"
+          className="text-neutral-strong underline decoration-edge underline-offset-4 transition-colors hover:decoration-muted"
         >
-          {!isConnected
-            ? "Connect wallet"
-            : busy && staking.action === "faucet"
-              ? staking.isSigning
-                ? "Confirm in wallet…"
-                : "Pending…"
-              : onCooldown
-                ? `Available in ${formatDuration(secondsLeft!)}`
-                : "Claim 100 TWLT"}
-        </Button>
-      </div>
+          token contract
+        </a>{" "}
+        itself. The cooldown is enforced on chain, per address.
+      </p>
+
+      <Button
+        className="mt-4 w-full"
+        disabled={!isConnected || busy || onCooldown}
+        onClick={() => void staking.claimFaucet().catch(() => undefined)}
+      >
+        {!isConnected
+          ? "Connect wallet"
+          : busy && staking.action === "faucet"
+            ? staking.isSigning
+              ? "Confirm in wallet…"
+              : "Pending…"
+            : onCooldown
+              ? `Available in ${formatDuration(secondsLeft!)}`
+              : "Claim 100 TWLT"}
+      </Button>
 
       <TxStatus
         hash={staking.action === "faucet" || staking.isConfirmed ? staking.hash : undefined}
@@ -65,6 +63,16 @@ export function FaucetCard() {
         error={staking.error}
         onDismiss={staking.resetTx}
       />
+    </div>
+  );
+
+  if (noPanel) {
+    return innerContent;
+  }
+
+  return (
+    <Panel title="Faucet" subtitle="100 TWLT per address, once every 24 hours">
+      {innerContent}
     </Panel>
   );
 }

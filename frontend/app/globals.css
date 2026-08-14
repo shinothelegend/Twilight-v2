@@ -8,19 +8,20 @@
  * communicated with glyphs and type weight, never with green/red.
  */
 @theme {
-  --color-night-900: #0a0a0c;
-  --color-night-800: #101014;
-  --color-night-700: #141418;
-  --color-panel: #1c1c20;
-  --color-panel-raised: #212126;
-  --color-edge: #2c2c32;
-  --color-divider: #2a2a2f;
-  --color-branch: #050506;
+  --color-night-900: #090a0f;
+  --color-night-800: #0d0f17;
+  --color-night-700: #121520;
+  --color-panel: #171a26;
+  --color-panel-raised: #1d2130;
+  --color-edge: rgba(255, 255, 255, 0.08);
+  --color-divider: rgba(255, 255, 255, 0.05);
+  --color-branch: #030406;
   --color-glow: #f5f3ee;
   --color-ink: #eeeeef;
   --color-muted: #8a8a90;
   --color-faint: #5c5c63;
   --color-neutral-strong: #c9c9c9;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Display serif, used only for the headline and the balance figure — the cinematic register. */
   --font-display: var(--font-playfair), ui-serif, Georgia, serif;
@@ -246,7 +247,7 @@ body {
 
 /* Focus ring that stays inside the palette. */
 :where(a, button, input, select, [tabindex]):focus-visible {
-  outline: 1px solid var(--color-glow);
+  outline: 1px solid var(--color-ink);
   outline-offset: 2px;
 }
 

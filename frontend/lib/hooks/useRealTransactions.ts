@@ -62,7 +62,7 @@ async function getLogsResilient(
   budget.remaining -= 1;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line
     return (await client.getLogs({...(params as any), fromBlock, toBlock})) as unknown[];
   } catch (error) {
     if (toBlock - fromBlock < 2n) throw error;
