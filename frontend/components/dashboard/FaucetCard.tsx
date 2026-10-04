@@ -1,5 +1,6 @@
 "use client";
 
+import {useEffect, useState} from "react";
 import {useAccount} from "wagmi";
 
 import {TxStatus} from "@/components/ui/TxStatus";
@@ -18,7 +19,11 @@ export function FaucetCard({noPanel = false}: {noPanel?: boolean}) {
   const {isConnected} = useAccount();
   const staking = useStaking();
 
-  const nowSeconds = Math.floor(Date.now() / 1000);
+  const [nowSeconds, setNowSeconds] = useState(() => Math.floor(Date.now() / 1000));
+  useEffect(() => {
+    const interval = setInterval(() => setNowSeconds(Math.floor(Date.now() / 1000)), 1000);
+    return () => clearInterval(interval);
+  }, []);
   const nextClaim = staking.nextFaucetClaim === undefined ? undefined : Number(staking.nextFaucetClaim);
   const secondsLeft = nextClaim === undefined ? undefined : nextClaim - nowSeconds;
   const onCooldown = secondsLeft !== undefined && secondsLeft > 0;

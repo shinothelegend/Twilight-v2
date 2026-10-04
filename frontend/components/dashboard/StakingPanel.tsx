@@ -1,6 +1,6 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {formatUnits, parseUnits} from "viem";
 import {useAccount} from "wagmi";
 
@@ -46,7 +46,11 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
   const [mode, setMode] = useState<"stake" | "withdraw">("stake");
   const [amount, setAmount] = useState("");
 
-  const nowSeconds = Math.floor(Date.now() / 1000);
+  const [nowSeconds, setNowSeconds] = useState(() => Math.floor(Date.now() / 1000));
+  useEffect(() => {
+    const interval = setInterval(() => setNowSeconds(Math.floor(Date.now() / 1000)), 1000);
+    return () => clearInterval(interval);
+  }, []);
   const apr = computeApr(
     staking.rewardRate,
     staking.totalStaked,
@@ -109,13 +113,13 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
       <div className="grid grid-cols-2 gap-5 px-5 py-5 sm:grid-cols-4">
         <PoolStat
           label="Total staked"
-          value={`${formatAmount(staking.totalStaked, 18, 2)} TWLT`}
-          loading={staking.totalStaked === undefined}
+          value={staking.totalStaked !== undefined ? `${formatAmount(staking.totalStaked, 18, 2)} TWLT` : "—"}
+          loading={staking.isLoading}
         />
         <PoolStat
           label="Current APR"
           value={apr === undefined ? "—" : formatPercent(apr)}
-          loading={staking.rewardRate === undefined}
+          loading={staking.isLoading}
           hint={apr === undefined ? "No active stake or period" : "From live reward rate"}
         />
         <PoolStat
@@ -125,12 +129,12 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
               ? "—"
               : `${Number(formatUnits(staking.rewardRate, 18)).toFixed(4)} /s`
           }
-          loading={staking.rewardRate === undefined}
+          loading={staking.isLoading}
         />
         <PoolStat
           label="Period ends in"
           value={periodSecondsLeft === undefined ? "—" : formatDuration(periodSecondsLeft)}
-          loading={staking.periodFinish === undefined}
+          loading={staking.isLoading}
         />
       </div>
 
@@ -139,14 +143,14 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
           <div className="grid grid-cols-2 gap-5 border-t border-divider px-5 py-5">
             <PoolStat
               label="Your stake"
-              value={`${formatAmount(staking.stakedBalance)} TWLT`}
-              loading={staking.stakedBalance === undefined}
+              value={staking.stakedBalance !== undefined ? `${formatAmount(staking.stakedBalance)} TWLT` : "—"}
+              loading={staking.isLoading}
             />
             <div className="flex flex-col justify-between">
               <PoolStat
                 label="Rewards earned"
-                value={`${formatAmount(staking.pendingRewards, 18, 6)} TWLT`}
-                loading={staking.pendingRewards === undefined}
+                value={staking.pendingRewards !== undefined ? `${formatAmount(staking.pendingRewards, 18, 6)} TWLT` : "—"}
+                loading={staking.isLoading}
               />
               {noPanel && staking.pendingRewards !== undefined && staking.pendingRewards > 0n && (
                 <Button

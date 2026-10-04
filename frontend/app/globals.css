@@ -7,20 +7,52 @@
  * the moon and for the soft halo behind the balance figure. Direction (up/down, gain/loss) is
  * communicated with glyphs and type weight, never with green/red.
  */
+:root {
+  --bg-900: #f7f6f2;
+  --bg-800: #eeebe3;
+  --bg-700: #e3dfd3;
+  --panel: #ffffff;
+  --panel-raised: #fbfbfa;
+  --edge: rgba(0, 0, 0, 0.08);
+  --divider: rgba(0, 0, 0, 0.05);
+  --branch: #1a1a1c;
+  --glow: #fdf5d3;
+  --ink: #111111;
+  --muted: #6b6b71;
+  --faint: #9898a0;
+  --neutral-strong: #333333;
+}
+
+.dark {
+  --bg-900: #090a0f;
+  --bg-800: #0d0f17;
+  --bg-700: #121520;
+  --panel: #171a26;
+  --panel-raised: #1d2130;
+  --edge: rgba(255, 255, 255, 0.08);
+  --divider: rgba(255, 255, 255, 0.05);
+  --branch: #030406;
+  --glow: #f5f3ee;
+  --ink: #eeeeef;
+  --muted: #8a8a90;
+  --faint: #5c5c63;
+  --neutral-strong: #c9c9c9;
+}
+
 @theme {
-  --color-night-900: #090a0f;
-  --color-night-800: #0d0f17;
-  --color-night-700: #121520;
-  --color-panel: #171a26;
-  --color-panel-raised: #1d2130;
-  --color-edge: rgba(255, 255, 255, 0.08);
-  --color-divider: rgba(255, 255, 255, 0.05);
-  --color-branch: #030406;
-  --color-glow: #f5f3ee;
-  --color-ink: #eeeeef;
-  --color-muted: #8a8a90;
-  --color-faint: #5c5c63;
-  --color-neutral-strong: #c9c9c9;
+  --color-night-900: var(--bg-900);
+  --color-night-800: var(--bg-800);
+  --color-night-700: var(--bg-700);
+  --color-panel: var(--panel);
+  --color-panel-raised: var(--panel-raised);
+  --color-edge: var(--edge);
+  --color-divider: var(--divider);
+  --color-branch: var(--branch);
+  --color-glow: var(--glow);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-neutral-strong: var(--neutral-strong);
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Display serif, used only for the headline and the balance figure — the cinematic register. */

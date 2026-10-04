@@ -4,6 +4,7 @@ import {ConnectButton} from "@rainbow-me/rainbowkit";
 import Link from "next/link";
 
 import {Button} from "@/components/ui/primitives";
+import {ThemeToggle} from "@/components/ui/ThemeToggle";
 
 /**
  * Top navigation. The connect control is RainbowKit's headless `ConnectButton.Custom`, so the
@@ -26,40 +27,43 @@ export function TopNav() {
           </span>
         </div>
 
-        <ConnectButton.Custom>
-          {({account, chain, openAccountModal, openChainModal, openConnectModal, mounted}) => {
-            const ready = mounted;
-            if (!ready) {
-              return <div className="h-10 w-32 rounded-xl border border-edge/50" />;
-            }
+        <div className="flex items-center gap-4">
+          <ConnectButton.Custom>
+            {({account, chain, openAccountModal, openChainModal, openConnectModal, mounted}) => {
+              const ready = mounted;
+              if (!ready) {
+                return <div className="h-10 w-32 rounded-xl border border-edge/50" />;
+              }
 
-            if (!account || !chain) {
-              return <Button onClick={openConnectModal}>Connect wallet</Button>;
-            }
+              if (!account || !chain) {
+                return <Button onClick={openConnectModal}>Connect wallet</Button>;
+              }
 
-            if (chain.unsupported) {
+              if (chain.unsupported) {
+                return (
+                  <Button variant="ghost" onClick={openChainModal}>
+                    Switch to Arbitrum Sepolia
+                  </Button>
+                );
+              }
+
               return (
-                <Button variant="ghost" onClick={openChainModal}>
-                  Switch to Arbitrum Sepolia
-                </Button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={openChainModal}
+                    className="hidden rounded-xl border border-edge px-3 py-2 text-xs tracking-[0.12em] text-muted uppercase transition-colors hover:border-muted hover:text-ink sm:block"
+                  >
+                    {chain.name}
+                  </button>
+                  <Button variant="ghost" onClick={openAccountModal} className="tnum">
+                    {account.displayName}
+                  </Button>
+                </div>
               );
-            }
-
-            return (
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={openChainModal}
-                  className="hidden rounded-xl border border-edge px-3 py-2 text-xs tracking-[0.12em] text-muted uppercase transition-colors hover:border-muted hover:text-ink sm:block"
-                >
-                  {chain.name}
-                </button>
-                <Button variant="ghost" onClick={openAccountModal} className="tnum">
-                  {account.displayName}
-                </Button>
-              </div>
-            );
-          }}
-        </ConnectButton.Custom>
+            }}
+          </ConnectButton.Custom>
+          <ThemeToggle />
+        </div>
       </div>
     </nav>
   );

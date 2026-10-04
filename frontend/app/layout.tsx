@@ -41,6 +41,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
     <html
       lang="en"
       className={`${playfair.variable} ${spaceGrotesk.variable} ${inter.variable}`}
+      suppressHydrationWarning
     >
       <body className="min-h-dvh bg-night-900 text-ink antialiased">
         <Providers>{children}</Providers>

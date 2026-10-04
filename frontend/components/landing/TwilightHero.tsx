@@ -152,7 +152,7 @@ export function TwilightHero() {
                   <div className="border border-white/5 bg-white/[0.02] p-4 rounded-xl">
                     <h3 className="text-ink font-semibold mb-1">2. Derived Truths Only</h3>
                     <p className="text-muted leading-relaxed">
-                      The dashboard displays no fiat total, because TWLT is a testnet asset without market valuation—any aggregated aggregate value would be an invented estimate. APR values are mathematically derived directly from the contracts' active parameters and total pool stake.
+                      The dashboard displays no fiat total, because TWLT is a testnet asset without market valuation—any aggregated aggregate value would be an invented estimate. APR values are mathematically derived directly from the contracts&apos; active parameters and total pool stake.
                     </p>
                   </div>
                   <div className="border border-white/5 bg-white/[0.02] p-4 rounded-xl">

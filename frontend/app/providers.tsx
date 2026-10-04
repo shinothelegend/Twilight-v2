@@ -29,13 +29,14 @@ twilightWalletTheme.colors.closeButtonBackground = "#1c1c20";
 twilightWalletTheme.colors.generalBorder = "#2a2a2f";
 twilightWalletTheme.colors.profileForeground = "#1c1c20";
 
+import {ThemeProvider} from "next-themes";
+
 export function Providers({children}: {children: React.ReactNode}) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
         defaultOptions: {
           queries: {
-            // Chain reads are cheap to repeat and must never go stale silently.
             retry: 1,
             refetchOnWindowFocus: true,
           },
@@ -44,16 +45,18 @@ export function Providers({children}: {children: React.ReactNode}) {
   );
 
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <RainbowKitProvider
-          theme={twilightWalletTheme}
-          initialChain={arbitrumSepolia}
-          modalSize="compact"
-        >
-          {children}
-        </RainbowKitProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
+          <RainbowKitProvider
+            theme={twilightWalletTheme}
+            initialChain={arbitrumSepolia}
+            modalSize="compact"
+          >
+            {children}
+          </RainbowKitProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ThemeProvider>
   );
 }
