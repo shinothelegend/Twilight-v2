@@ -7,19 +7,31 @@ import {
   metaMaskWallet,
   rainbowWallet,
   walletConnectWallet,
+  rabbyWallet,
+  trustWallet,
+  okxWallet,
+  phantomWallet,
 } from "@rainbow-me/rainbowkit/wallets";
 import {createConfig, fallback, http} from "wagmi";
 import {arbitrumSepolia} from "wagmi/chains";
 
 /**
- * WalletConnect project id. Optional: without it the app still connects through any injected
- * wallet (MetaMask, Rabby, Brave) and Coinbase Wallet — only the QR-code flow needs it.
+ * WalletConnect project id. Without it the app still connects through any injected
+ * wallet (MetaMask, Rabby, Brave) and Coinbase Wallet.
  */
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "twilight-defi-local";
 
-const wallets = projectId
-  ? [injectedWallet, metaMaskWallet, rainbowWallet, coinbaseWallet, walletConnectWallet]
-  : [injectedWallet, coinbaseWallet];
+const wallets = [
+  metaMaskWallet,
+  rabbyWallet,
+  trustWallet,
+  okxWallet,
+  phantomWallet,
+  coinbaseWallet,
+  injectedWallet,
+  rainbowWallet,
+  walletConnectWallet,
+];
 
 const connectors = connectorsForWallets([{groupName: "Connect", wallets}], {
   appName: "Twilight DeFi",
