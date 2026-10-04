@@ -21,6 +21,9 @@
   --muted: #6b6b71;
   --faint: #9898a0;
   --neutral-strong: #333333;
+  --shadow-panel: 0 12px 32px -16px rgba(0,0,0,0.1);
+  --shadow-panel-hover: 0 24px 48px -20px rgba(0,0,0,0.15);
+  --inset-edge: 0 1px 0 rgba(255,255,255,0.7) inset;
 }
 
 .dark {
@@ -37,6 +40,9 @@
   --muted: #8a8a90;
   --faint: #5c5c63;
   --neutral-strong: #c9c9c9;
+  --shadow-panel: 0 28px 56px -32px rgba(0,0,0,0.95);
+  --shadow-panel-hover: 0 32px 64px -24px rgba(0,0,0,0.98);
+  --inset-edge: 0 1px 0 rgba(255,255,255,0.05) inset;
 }
 
 @theme {

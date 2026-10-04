@@ -2,36 +2,47 @@
 
 import "@rainbow-me/rainbowkit/styles.css";
 
-import {RainbowKitProvider, darkTheme} from "@rainbow-me/rainbowkit";
+import {RainbowKitProvider, darkTheme, lightTheme} from "@rainbow-me/rainbowkit";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {WagmiProvider} from "wagmi";
-
+import {useTheme, ThemeProvider} from "next-themes";
 import {arbitrumSepolia, wagmiConfig} from "@/lib/wagmiConfig";
+import {ThemeTransition} from "@/components/ui/ThemeTransition";
 
-/**
- * RainbowKit's default theme is deliberately colourful; Twilight is strictly grayscale, so the
- * wallet modal is re-themed to the same palette as the rest of the app.
- */
-const twilightWalletTheme = darkTheme({
+const twilightDarkTheme = darkTheme({
   accentColor: "#eeeeef",
   accentColorForeground: "#0a0a0c",
   borderRadius: "medium",
   overlayBlur: "small",
 });
+twilightDarkTheme.colors.modalBackground = "#141418";
+twilightDarkTheme.colors.modalBorder = "#2c2c32";
+twilightDarkTheme.colors.modalText = "#eeeeef";
+twilightDarkTheme.colors.modalTextSecondary = "#8a8a90";
+twilightDarkTheme.colors.actionButtonBorder = "#2c2c32";
+twilightDarkTheme.colors.closeButtonBackground = "#1c1c20";
+twilightDarkTheme.colors.generalBorder = "#2a2a2f";
+twilightDarkTheme.colors.profileForeground = "#1c1c20";
 
-twilightWalletTheme.colors.modalBackground = "#141418";
-twilightWalletTheme.colors.modalBorder = "#2c2c32";
-twilightWalletTheme.colors.modalText = "#eeeeef";
-twilightWalletTheme.colors.modalTextSecondary = "#8a8a90";
-twilightWalletTheme.colors.actionButtonBorder = "#2c2c32";
-twilightWalletTheme.colors.closeButtonBackground = "#1c1c20";
-twilightWalletTheme.colors.generalBorder = "#2a2a2f";
-twilightWalletTheme.colors.profileForeground = "#1c1c20";
+const twilightLightTheme = lightTheme({
+  accentColor: "#111111",
+  accentColorForeground: "#ffffff",
+  borderRadius: "medium",
+  overlayBlur: "small",
+});
+twilightLightTheme.colors.modalBackground = "#ffffff";
+twilightLightTheme.colors.modalBorder = "#e5e7eb";
+twilightLightTheme.colors.modalText = "#111111";
+twilightLightTheme.colors.modalTextSecondary = "#6b7280";
+twilightLightTheme.colors.actionButtonBorder = "#e5e7eb";
+twilightLightTheme.colors.closeButtonBackground = "#f3f4f6";
+twilightLightTheme.colors.generalBorder = "#e5e7eb";
+twilightLightTheme.colors.profileForeground = "#f3f4f6";
 
-import {ThemeProvider} from "next-themes";
-
-export function Providers({children}: {children: React.ReactNode}) {
+function InnerProviders({children}: {children: React.ReactNode}) {
+  const {resolvedTheme} = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -44,19 +55,30 @@ export function Providers({children}: {children: React.ReactNode}) {
       }),
   );
 
+  useEffect(() => setMounted(true), []);
+
+  const activeTheme = mounted && resolvedTheme === "dark" ? twilightDarkTheme : twilightLightTheme;
+
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      <WagmiProvider config={wagmiConfig}>
-        <QueryClientProvider client={queryClient}>
-          <RainbowKitProvider
-            theme={twilightWalletTheme}
-            initialChain={arbitrumSepolia}
-            modalSize="compact"
-          >
-            {children}
-          </RainbowKitProvider>
-        </QueryClientProvider>
-      </WagmiProvider>
+    <WagmiProvider config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <RainbowKitProvider
+          theme={activeTheme}
+          initialChain={arbitrumSepolia}
+          modalSize="compact"
+        >
+          {children}
+        </RainbowKitProvider>
+      </QueryClientProvider>
+    </WagmiProvider>
+  );
+}
+
+export function Providers({children}: {children: React.ReactNode}) {
+  return (
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
+      <ThemeTransition />
+      <InnerProviders>{children}</InnerProviders>
     </ThemeProvider>
   );
 }

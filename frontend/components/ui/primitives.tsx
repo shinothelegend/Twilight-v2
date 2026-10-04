@@ -23,10 +23,10 @@ export function Panel({
       className={cx(
         // Frosted rather than solid, so the sky behind stays faintly readable through the panel
         // and the cards feel like glass held up to the night rather than boxes pasted over it.
-        "rounded-3xl border border-white/[0.09] bg-panel/55 backdrop-blur-md",
-        "shadow-[0_1px_0_rgba(255,255,255,0.05)_inset,0_28px_56px_-32px_rgba(0,0,0,0.95)]",
+        "rounded-3xl border border-edge bg-panel/70 backdrop-blur-xl",
+        "shadow-[var(--shadow-panel),var(--inset-edge)]",
         "transition-all duration-300 ease-[var(--ease-out-expo)]",
-        "hover:border-white/[0.16] hover:shadow-[0_1px_0_rgba(255,255,255,0.08)_inset,0_32px_64px_-24px_rgba(0,0,0,0.98)]",
+        "hover:border-edge/100 hover:-translate-y-0.5 hover:shadow-[var(--shadow-panel-hover),var(--inset-edge)]",
         className,
       )}
     >

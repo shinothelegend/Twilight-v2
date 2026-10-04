@@ -115,12 +115,13 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
           label="Total staked"
           value={staking.totalStaked !== undefined ? `${formatAmount(staking.totalStaked, 18, 2)} TWLT` : "—"}
           loading={staking.isLoading}
+          hint="Read from TwilightStaking.totalSupply()"
         />
         <PoolStat
           label="Current APR"
           value={apr === undefined ? "—" : formatPercent(apr)}
           loading={staking.isLoading}
-          hint={apr === undefined ? "No active stake or period" : "From live reward rate"}
+          hint={apr === undefined ? "No active stake or period" : "Derived from rewardRate / totalStaked"}
         />
         <PoolStat
           label="Emission"
@@ -130,11 +131,13 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
               : `${Number(formatUnits(staking.rewardRate, 18)).toFixed(4)} /s`
           }
           loading={staking.isLoading}
+          hint="Read from TwilightStaking.rewardRate()"
         />
         <PoolStat
           label="Period ends in"
           value={periodSecondsLeft === undefined ? "—" : formatDuration(periodSecondsLeft)}
           loading={staking.isLoading}
+          hint="Read from TwilightStaking.periodFinish()"
         />
       </div>
 
@@ -145,12 +148,14 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
               label="Your stake"
               value={staking.stakedBalance !== undefined ? `${formatAmount(staking.stakedBalance)} TWLT` : "—"}
               loading={staking.isLoading}
+              hint="Read from TwilightStaking.balanceOf(wallet)"
             />
             <div className="flex flex-col justify-between">
               <PoolStat
                 label="Rewards earned"
                 value={staking.pendingRewards !== undefined ? `${formatAmount(staking.pendingRewards, 18, 6)} TWLT` : "—"}
                 loading={staking.isLoading}
+                hint="Read from TwilightStaking.earned(wallet)"
               />
               {noPanel && staking.pendingRewards !== undefined && staking.pendingRewards > 0n && (
                 <Button

@@ -43,6 +43,9 @@ export function FaucetCard({noPanel = false}: {noPanel?: boolean}) {
         </a>{" "}
         itself. The cooldown is enforced on chain, per address.
       </p>
+      <p className="mt-2 text-[10px] uppercase tracking-wider text-faint font-bold">
+        Read from TwilightToken.nextFaucetClaim()
+      </p>
 
       <Button
         className="mt-4 w-full"
