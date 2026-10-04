@@ -19,7 +19,7 @@ import {arbitrumSepolia} from "wagmi/chains";
  * WalletConnect project id. Without it the app still connects through any injected
  * wallet (MetaMask, Rabby, Brave) and Coinbase Wallet.
  */
-const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "twilight-defi-local";
+const projectId = process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "";
 
 const wallets = [
   metaMaskWallet,
@@ -30,8 +30,11 @@ const wallets = [
   coinbaseWallet,
   injectedWallet,
   rainbowWallet,
-  walletConnectWallet,
 ];
+
+if (projectId) {
+  wallets.push(walletConnectWallet);
+}
 
 const connectors = connectorsForWallets([{groupName: "Connect", wallets}], {
   appName: "Twilight DeFi",
