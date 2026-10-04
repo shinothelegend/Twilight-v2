@@ -63,7 +63,8 @@ forge test -vv
 1. **Get testnet ETH**: Use [arbitrum.faucet.dev](https://arbitrum.faucet.dev/), [faucet.quicknode.com/arbitrum/sepolia](https://faucet.quicknode.com/arbitrum/sepolia) or [l2faucet.com/arbitrum](https://www.l2faucet.com/arbitrum). If you only have Ethereum Sepolia ETH, bridge it at [bridge.arbitrum.io](https://bridge.arbitrum.io/).
 2. **Clone the repository**: `git clone https://github.com/shinothelegend/Twilight-v2.git`
 3. **Start the dev server**: `cd frontend && npm install && npm run dev`
-3. **Connect a Wallet**: Use any Arbitrum Sepolia compatible wallet.
+4. **Connect a Wallet**: Use any Arbitrum Sepolia compatible wallet.
+5. **Or press Take the guided tour** on the landing page — it walks you through your first transaction with live confirmation states.
 4. **Use the Faucet**: Mint 100 TWLT directly from the contract.
 5. **Stake**: Approve and deposit your TWLT into the Staking pool.
 6. **Toggle Theme**: Experience the cinematic cutscene between Daybreak and Twilight modes.

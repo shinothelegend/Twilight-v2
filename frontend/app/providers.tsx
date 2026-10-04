@@ -74,11 +74,17 @@ function InnerProviders({children}: {children: React.ReactNode}) {
   );
 }
 
+import {TourProvider} from "@/components/tour/TourProvider";
+
 export function Providers({children}: {children: React.ReactNode}) {
   return (
     <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={true}>
       <ThemeTransition />
-      <InnerProviders>{children}</InnerProviders>
+      <InnerProviders>
+        <TourProvider>
+          {children}
+        </TourProvider>
+      </InnerProviders>
     </ThemeProvider>
   );
 }

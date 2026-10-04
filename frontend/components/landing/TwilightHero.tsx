@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 
 import {TwilightScene} from "@/components/landing/TwilightScene";
 import {AntigravityBackground} from "@/components/landing/AntigravityBackground";
 import {DashboardPreview} from "@/components/landing/DashboardPreview";
 import {deployment} from "@/lib/contracts";
+import {useTour} from "@/components/tour/TourContext";
 
 /**
  * Landing page. One screen, no scroll-jacking, one call to action.
@@ -17,6 +18,14 @@ import {deployment} from "@/lib/contracts";
  */
 export function TwilightHero() {
   const [activeTab, setActiveTab] = useState<"about" | "features" | "docs" | "community" | null>(null);
+  const {startTour} = useTour();
+  const [hasDoneTour, setHasDoneTour] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasDoneTour(localStorage.getItem("twilight-tour-done") === "true");
+    }
+  }, []);
 
   return (
     <main className="relative flex min-h-dvh flex-col font-display">
@@ -91,13 +100,20 @@ export function TwilightHero() {
         <DashboardPreview />
 
         {/* Action Button positioned below the dashboard card */}
-        <div className="relative mt-8 flex items-center justify-center">
+        <div className="relative mt-8 flex flex-col items-center justify-center gap-4">
           <Link
             href="/app"
             className="font-display rounded-full bg-glow px-10 py-3.5 text-xs font-bold tracking-[0.14em] uppercase text-night-900 transition-all duration-300 ease-[var(--ease-out-expo)] hover:bg-white hover:scale-[1.03] hover:shadow-[0_0_24px_rgba(255,255,255,0.25)] active:scale-[0.97]"
           >
             Launch App
           </Link>
+          <button
+            onClick={startTour}
+            className="flex items-center gap-2 rounded-full border border-edge bg-transparent px-6 py-2.5 text-[10px] font-bold tracking-[0.14em] uppercase text-ink transition-all duration-300 hover:border-white/20 hover:bg-panel/35"
+          >
+            <span className="text-glow text-base leading-none">✦</span>
+            {hasDoneTour ? "Review the tour" : "Take the guided tour · 2 min"}
+          </button>
         </div>
 
         <a

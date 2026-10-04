@@ -49,7 +49,17 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
   const [nowSeconds, setNowSeconds] = useState(() => Math.floor(Date.now() / 1000));
   useEffect(() => {
     const interval = setInterval(() => setNowSeconds(Math.floor(Date.now() / 1000)), 1000);
-    return () => clearInterval(interval);
+    
+    const handleFill = (e: CustomEvent<string>) => {
+      setMode("stake");
+      setAmount(e.detail);
+    };
+    window.addEventListener("twilight-tour-fill", handleFill as EventListener);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("twilight-tour-fill", handleFill as EventListener);
+    };
   }, []);
   const apr = computeApr(
     staking.rewardRate,
@@ -163,6 +173,7 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
                   className="mt-2 px-3 py-1 text-xs w-fit"
                   disabled={busy}
                   onClick={() => void staking.claim().catch(() => undefined)}
+                  data-tour="stake-claim"
                 >
                   {staking.action === "claim" && busy ? "Claiming…" : "Claim rewards"}
                 </Button>
@@ -221,7 +232,12 @@ export function StakingPanel({noPanel = false}: {noPanel?: boolean}) {
               {amountError && <span className="text-muted">{amountError}</span>}
             </div>
 
-            <Button className="mt-4 w-full" disabled={!canSubmit} onClick={() => void submit()}>
+            <Button 
+              className="mt-4 w-full" 
+              disabled={!canSubmit} 
+              onClick={() => void submit()}
+              data-tour={needsApproval ? "stake-approve" : "stake-button"}
+            >
               {busy
                 ? staking.isSigning
                   ? "Confirm in wallet…"

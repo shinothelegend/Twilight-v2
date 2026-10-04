@@ -51,6 +51,7 @@ export function FaucetCard({noPanel = false}: {noPanel?: boolean}) {
         className="mt-4 w-full"
         disabled={!isConnected || busy || onCooldown}
         onClick={() => void staking.claimFaucet().catch(() => undefined)}
+        data-tour="faucet-claim"
       >
         {!isConnected
           ? "Connect wallet"

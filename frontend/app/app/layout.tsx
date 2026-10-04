@@ -78,6 +78,11 @@ export default function DashboardLayout({children}: {children: React.ReactNode})
                 <Link
                   key={tab.href}
                   href={tab.href}
+                  data-tour={
+                    tab.label === "Faucet" ? "nav-faucet" :
+                    tab.label === "Stake" ? "nav-stake" :
+                    tab.label === "Transactions" ? "nav-transactions" : undefined
+                  }
                   className={`flex-1 py-3.5 text-center text-[10px] sm:text-xs tracking-[0.14em] uppercase transition-all duration-300 font-brand font-bold ${
                     isActive
                       ? "border-b-2 border-ink text-ink bg-panel-raised/30"

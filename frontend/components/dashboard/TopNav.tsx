@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import {Button} from "@/components/ui/primitives";
 import {ThemeToggle} from "@/components/ui/ThemeToggle";
+import {useTour} from "@/components/tour/TourContext";
 
 /**
  * Top navigation. The connect control is RainbowKit's headless `ConnectButton.Custom`, so the
@@ -12,6 +13,8 @@ import {ThemeToggle} from "@/components/ui/ThemeToggle";
  * RainbowKit's, re-themed in providers.tsx.
  */
 export function TopNav() {
+  const {startTour} = useTour();
+
   return (
     <nav className="sticky top-0 z-20 border-b border-divider bg-night-900/70 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
@@ -36,7 +39,7 @@ export function TopNav() {
               }
 
               if (!account || !chain) {
-                return <Button onClick={openConnectModal}>Connect wallet</Button>;
+                return <Button onClick={openConnectModal} data-tour="connect-button">Connect wallet</Button>;
               }
 
               if (chain.unsupported) {
@@ -55,13 +58,20 @@ export function TopNav() {
                   >
                     {chain.name}
                   </button>
-                  <Button variant="ghost" onClick={openAccountModal} className="tnum">
+                  <Button variant="ghost" onClick={openAccountModal} className="tnum" data-tour="connect-button">
                     {account.displayName}
                   </Button>
                 </div>
               );
             }}
           </ConnectButton.Custom>
+          <button
+            onClick={startTour}
+            title="Restart guided tour"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-edge text-muted transition-colors hover:border-muted hover:text-ink focus:outline-none"
+          >
+            ?
+          </button>
           <ThemeToggle />
         </div>
       </div>
