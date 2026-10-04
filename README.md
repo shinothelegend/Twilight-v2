@@ -6,6 +6,8 @@ interface built for legibility instead of spectacle.
 Submission for the **Arbitrum Open House Online Buildathon** (HackQuest). Deployed on **Arbitrum
 Sepolia** (chain `421614`).
 
+[Live Demo](https://twilight-v2.vercel.app/)
+
 ---
 
 ## The problem
@@ -223,7 +225,7 @@ than a cold-start zero state.
 `forge-std` and `openzeppelin-contracts` are git submodules, so clone recursively:
 
 ```bash
-git clone --recursive https://github.com/shinothelegend/Twilight.git
+git clone --recursive https://github.com/shinothelegend/Twilight-v2.git
 ```
 
 Already cloned without it? `git submodule update --init --recursive`.

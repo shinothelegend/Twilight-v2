@@ -4,7 +4,6 @@
   "deployer": "0x6b320D758485B9b8cB62010cf8D5AF94849e896B",
   "rewardAmount": "1000000000000000000000000",
   "rewardDuration": 31536000,
-  "startBlock": 11410137,
   "twilightStaking": "0x8cdD5E290E7F76257e2D47Cc34D98283eea044Ca",
   "twilightToken": "0x6ab1B7ec49c0AcA914311754e304e46b2739950D"
 }
